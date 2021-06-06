@@ -1,12 +1,10 @@
 import React from 'react';
 import { Link } from 'gatsby';
-import Footer from '../components/footer';
-import Header from '../components/header';
+import Layout from '../components/layout';
 
 const AboutPage = () => {
   return (
-    <div>
-      <Header />
+    <Layout>
       <h1>A little about me</h1>
       <p>
         As an employee and a freelancer, I have taken many projects from
@@ -32,8 +30,7 @@ const AboutPage = () => {
       <p>
         Want to work with me? <Link to="/contact">Reach out</Link>
       </p>
-      <Footer />
-    </div>
+    </Layout>
   );
 };
 
