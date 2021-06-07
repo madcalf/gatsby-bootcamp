@@ -10,5 +10,15 @@ module.exports = {
     random: 'One does not simply walk into mordor!',
     author: 'D. Dixon',
   },
-  plugins: ['gatsby-plugin-sass'],
+  plugins: [
+    'gatsby-plugin-sass',
+    {
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        name: 'src',
+        path: `${__dirname}/src/`,
+      },
+    },
+    'gatsby-transformer-remark',
+  ],
 };
