@@ -1,4 +1,5 @@
-// this is like a gatsby-node config file?
+// this is like a gatsby-node config file
+// run once when building the site
 const path = require('path');
 
 // Called whenever a new graphQL node is created We want to
@@ -16,4 +17,39 @@ module.exports.onCreateNode = ({ node, actions }) => {
       value: slug,
     });
   }
+};
+
+module.exports.createPages = async ({ graphql, actions }) => {
+  console.log('CREATE PAGES');
+  const { createPage } = actions;
+  // get path to our blog template
+  const blogTemplate = path.resolve('./src/templates/blog.js');
+
+  // get markdown data (array of edges with just slug data)
+  const res = await graphql(`
+    query {
+      allMarkdownRemark {
+        edges {
+          node {
+            fields {
+              slug
+            }
+          }
+        }
+      }
+    }
+  `);
+
+  // create new pages. Note we're just passing the slug to
+  // the blog template. The template will use the slug to
+  // query the actual content
+  res.data.allMarkdownRemark.edges.forEach(edge => {
+    createPage({
+      path: `/blog/${edge.node.fields.slug}`,
+      component: blogTemplate,
+      context: {
+        slug: edge.node.fields.slug,
+      },
+    });
+  });
 };

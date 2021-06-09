@@ -8,7 +8,6 @@ const Header = () => {
       site {
         siteMetadata {
           title
-          random
         }
       }
     }
@@ -18,7 +17,7 @@ const Header = () => {
     <header className={headerStyles.header}>
       <h1>
         <Link className={headerStyles.title} to="/">
-          {data.site.siteMetadata.random}
+          {data.site.siteMetadata.title}
         </Link>
       </h1>
       <nav>
