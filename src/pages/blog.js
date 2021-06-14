@@ -12,6 +12,9 @@ const BlogPage = () => {
             id
             title
             slug
+            body {
+              raw
+            }
             publishedDate(formatString: "ddd MMMM do, YYYY")
           }
         }

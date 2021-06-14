@@ -2,21 +2,9 @@
 // run once when building the site
 const path = require('path');
 
-// Called whenever a new graphQL node is created We want to
-// add a 'slug' field to the MarkdownRemark nodes (our blog
-// posts) using the node's' base filename.
 module.exports.onCreateNode = ({ node, actions }) => {
-  const { createNodeField } = actions;
-  if (node.internal.type === 'MarkdownRemark') {
-    const slug = path.basename(node.fileAbsolutePath, '.md');
-
-    // add a slug field onto the node
-    createNodeField({
-      node,
-      name: 'slug',
-      value: slug,
-    });
-  }
+  const { createNode, createNodeField } = actions;
+  console.log('NODE CREATED', node);
 };
 
 module.exports.createPages = async ({ graphql, actions }) => {
@@ -25,30 +13,30 @@ module.exports.createPages = async ({ graphql, actions }) => {
   // get path to our blog template
   const blogTemplate = path.resolve('./src/templates/blog.js');
 
-  // get markdown data (array of edges with just slug data)
-  const res = await graphql(`
+  // query contentful data for the slugs to create our pages
+  const response = await graphql(`
     query {
-      allMarkdownRemark {
+      allContentfulBlogPost {
         edges {
           node {
-            fields {
-              slug
-            }
+            slug
           }
         }
       }
     }
   `);
 
-  // create new pages. Note we're just passing the slug to
+  // 4:01:48
+  // create the pages. Note we're just passing the slug to
   // the blog template. The template will use the slug to
-  // query the actual content
-  res.data.allMarkdownRemark.edges.forEach(edge => {
+  // query the actual content. Considered better practice
+  // than passing all blog data directly to the template.
+  response.data.allContentfulBlogPost.edges.forEach(edge => {
     createPage({
-      path: `/blog/${edge.node.fields.slug}`,
+      path: `/blog/${edge.node.slug}`,
       component: blogTemplate,
       context: {
-        slug: edge.node.fields.slug,
+        slug: edge.node.slug,
       },
     });
   });
