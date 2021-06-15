@@ -27,7 +27,6 @@ const BlogPage = () => {
       <h1>Blog</h1>
       <ol className={blogStyles.posts}>
         {edges.map(edge => {
-          console.log('edge', edge);
           return (
             <li key={edge.node.id} className={blogStyles.post}>
               <Link to={`../blog/${edge.node.slug}`}>

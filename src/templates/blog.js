@@ -37,16 +37,19 @@ export const query = graphql`
 // body.json is now body.raw
 
 const Blog = props => {
-  console.log('PROPS', props);
   // specify options to render various richText elements. Right now just worry about the image which is an embedded asset
   const options = {
     renderNode: {
       [BLOCKS.EMBEDDED_ASSET]: node => {
-        return (
-          <GatsbyImage
-            alt="some alt text"
-            image={node.data.target.gatsbyImageData}
-          />
+        const target = node.data.target;
+        const isVideo = target.file.contentType === 'video/quicktime';
+
+        return isVideo ? (
+          <video controls width="400">
+            <source src={target.file.url} />
+          </video>
+        ) : (
+          <GatsbyImage alt="some alt text" image={target.gatsbyImageData} />
         );
       },
     },
