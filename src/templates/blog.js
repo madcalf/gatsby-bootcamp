@@ -16,27 +16,20 @@ export const query = graphql`
         raw
         references {
           ... on ContentfulAsset {
+            # __typename and contentful_id are required to resolve the references
             contentful_id
             __typename
-            fixed(width: 400) {
-              width
-              height
-              src
-              srcSet
+            file {
+              contentType
+              url
             }
           }
+          gatsbyImageData(layout: FULL_WIDTH)
         }
       }
     }
   }
 `;
-
-// resize(width: 400, height: 150, grayscale: true) {
-//               width
-//               height
-//               src
-//               aspectRatio
-//             }
 
 // Note diffs from Andrew's video based on updated Gatsby:
 // No longer use @contentful/rich-text-react-renderer.
@@ -44,15 +37,20 @@ export const query = graphql`
 // body.json is now body.raw
 
 const Blog = props => {
-  // specify options to render various richText elements
+  console.log('PROPS', props);
+  // specify options to render various richText elements. Right now just worry about the image which is an embedded asset
   const options = {
     renderNode: {
       [BLOCKS.EMBEDDED_ASSET]: node => {
-        return <Img {...node.data.target} />;
+        return (
+          <GatsbyImage
+            alt="some alt text"
+            image={node.data.target.gatsbyImageData}
+          />
+        );
       },
     },
   };
-  console.log('OPTIONS', options);
 
   // Note: props.data is given to us via the query above
   const post = props.data.contentfulBlogPost;
