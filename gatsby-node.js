@@ -11,7 +11,7 @@ module.exports.createPages = async ({ graphql, actions }) => {
   console.log('CREATE PAGES');
   const { createPage } = actions;
   // get path to our blog template
-  const blogTemplate = path.resolve('./src/templates/blog.js');
+  const blogTemplate = path.resolve('./src/templates/blog-template.js');
 
   // query contentful data for the slugs to create our pages
   const response = await graphql(`
