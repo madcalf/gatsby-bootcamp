@@ -4,14 +4,14 @@ const path = require('path');
 
 module.exports.onCreateNode = ({ node, actions }) => {
   const { createNode, createNodeField } = actions;
-  console.log('NODE CREATED', node);
+  // console.log('NODE CREATED', node);
 };
 
 module.exports.createPages = async ({ graphql, actions }) => {
   console.log('CREATE PAGES');
   const { createPage } = actions;
   // get path to our blog template
-  const blogTemplate = path.resolve('./src/templates/blog-template.js');
+  const blogTemplate = path.resolve('./src/templates/blog.js');
 
   // query contentful data for the slugs to create our pages
   const response = await graphql(`
